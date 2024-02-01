@@ -1,3 +1,5 @@
+#This is the same program but the API keys have been kept to streamlit secrets to deploy the app.
+
 import os, shutil
 from dotenv import load_dotenv
 import streamlit as st
@@ -73,11 +75,11 @@ def main():
     option = st.selectbox('Select which LLM Service You want to use?',
     ('gemini-pro', 'gpt-3.5-turbo'))
 
-    llm = Gemini(model="gemini-pro", temperature=0, max_tokens=256, api_key=os.environ.get('GOOGLE_API_KEY'))
+    llm = Gemini(model="gemini-pro", temperature=0, max_tokens=256, api_key=st.secrets['GOOGLE_API_KEY'])
 
     if st.button("Select"):
         if option == 'gpt-3.5-turbo':
-            llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=256, api_key=os.environ.get('OPENAI_API_KEY'))
+            llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=256, api_key=st.secrets['OPENAI_API_KEY'])
 
         service_context = ServiceContext.from_defaults(llm=llm, chunk_size=800, chunk_overlap=20)
         set_global_service_context(service_context)
