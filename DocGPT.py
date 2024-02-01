@@ -67,8 +67,8 @@ def chatBot():
 
 
 def main():
-    st.set_page_config("Chat PDF")
-    st.header("Chat with Multiple PDF using LlamaIndex🦙")
+    st.set_page_config("Chat Documents")
+    st.header("Chat with Multiple Documents(.pdf, .doc, .csv, etc) using LlamaIndex🦙")
 
     option = st.selectbox('Select which LLM Service You want to use?',
     ('gpt-3.5-turbo', 'gemini-pro'))
