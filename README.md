@@ -7,8 +7,13 @@ You will need a Google Gemini API Key to run this app. If you want to use OpenAI
 Steps to install and use this app:
 
 Step 1: Run the  `pip install -r requirements.txt` to install the requirements.
+
 Step 2: Create a file named `.env` where you will store your API keys.
+
 Step 3: Put the API Keys in the following format: 
+
         GOOGLE_API_KEY = "YOUR_API_KEY"
+        
         OPENAI_API_KEY = "YOUR_API_KEY"
+        
 Step 4: Run the `streamlit run DocGPT.py` to run the app.
