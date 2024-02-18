@@ -1,11 +1,12 @@
 import os, shutil
 from dotenv import load_dotenv
 import streamlit as st
-from llama_index import VectorStoreIndex, SimpleDirectoryReader
+from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
 from pypdf import PdfReader
-from llama_index.schema import Document
-from llama_index import ServiceContext, set_global_service_context
-from llama_index.llms import OpenAI, Gemini
+from llama_index.core import Document
+from llama_index.core import Settings
+from llama_index.llms.openai import OpenAI
+import google.generativeai as genai
 
 
 load_dotenv()
@@ -71,16 +72,18 @@ def main():
     st.header("Chat with Multiple Documents(.pdf, .doc, .csv, etc) using LlamaIndex🦙")
 
     option = st.selectbox('Select which LLM Service You want to use?',
-    ('gemini-pro', 'gpt-3.5-turbo'))
+    ('gpt-3.5-turbo', 'gemini-pro', 'gpt-4'))
 
-    llm = Gemini(model="gemini-pro", temperature=0, max_tokens=256, api_key=os.environ.get('GOOGLE_API_KEY'))
+    llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=256, api_key=os.environ.get('OPENAI_API_KEY'))
 
     if st.button("Select"):
-        if option == 'gpt-3.5-turbo':
-            llm = OpenAI(model="gpt-3.5-turbo", temperature=0, max_tokens=256, api_key=os.environ.get('OPENAI_API_KEY'))
+        if option == 'gemini-pro':
+            llm = genai.configure(api_key=os.environ.get('GOOGLE_API_KEY'), client_options={"api_endpoint": "generativelanguage.googleapis.com"})
+        elif option == 'gpt-4':
+            llm = OpenAI(model="gpt-4", temperature=0, max_tokens=256, api_key=os.environ.get('OPENAI_API_KEY'))
 
-        service_context = ServiceContext.from_defaults(llm=llm, chunk_size=800, chunk_overlap=20)
-        set_global_service_context(service_context)
+
+    Settings.llm = llm
 
     with st.sidebar:
         st.title("Menu:")
