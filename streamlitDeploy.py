@@ -77,22 +77,22 @@ def main():
 
     option = st.selectbox(
         "Select which LLM Service You want to use?",
-        ("gpt-3.5-turbo", "gemini-pro"),
+        ("gemini-pro", "gpt-3.5-turbo"),
     )
 
     if "llm" not in st.session_state:
-        st.session_state.llm = OpenAI(
-            model="gpt-3.5-turbo",
-            temperature=0,
-            max_tokens=256,
-            api_key=st.secrets["OPENAI_API_KEY"],
+        st.session_state.llm = genai.configure(
+            api_key=st.secrets["GOOGLE_API_KEY"],
+            client_options={"api_endpoint": "generativelanguage.googleapis.com"},
         )
 
     if st.button("Select"):
-        if option == "gemini-pro":
-            st.session_state.llm = genai.configure(
-                api_key=st.secrets["GOOGLE_API_KEY"],
-                client_options={"api_endpoint": "generativelanguage.googleapis.com"},
+        if option == "gpt-3.5-turbo":
+            st.session_state.llm = OpenAI(
+                model="gpt-3.5-turbo",
+                temperature=0,
+                max_tokens=256,
+                api_key=st.secrets["OPENAI_API_KEY"],
             )
 
     Settings.llm = st.session_state.llm
